@@ -1,246 +1,132 @@
-# MURF-AI-CODING-CHALLEGENGE-ECHOAI-
-AI Voice Agent built with FastAPI, AssemblyAI, Gemini, and Murf. Enables real-time speech-to-speech chat, echo bot, TTS, and WebSocket streaming with session memory and clean modular design.
-AI Voice Agent (FastAPI + AssemblyAI + Gemini + Murf)
-
-A production-style prototype of a voice-first conversational AI agent built using FastAPI (Python) for the backend and HTML/JavaScript for the frontend.
-
-The system enables end-to-end interaction:
-
-User speaks into the browser.
-
-Speech is recorded and uploaded.
-
-AssemblyAI converts speech to text.
-
-Gemini LLM (Google) processes the text, maintains conversational context, and generates a response.
-
-Murf AI converts the response back into natural speech.
-
-The browser automatically plays the reply.
-
-This project was created as part of the 30-Day AI Voice Agent Challenge.
-
-Core Features
-
-One-tap voice chat: press record, speak, and receive an AI response in natural voice.
-
-Multi-stage processing pipeline: STT (AssemblyAI) → LLM (Gemini) → TTS (Murf).
-
-Persistent session memory: per-browser session_id maintains conversation history.
-
-Real-time web search support via Tavily API (Gemini function calling).
-
-WebSocket streaming for partial transcripts and low-latency playback.
-
-Public demo safety: features are gated until users provide their own API keys (no shared secrets exposed).
-
-Sidebar tools:
-
-Text-to-Speech generator (enter text → Murf audio).
-
-Echo Bot (record → transcribe → re-speak with Murf).
-
-Keyboard shortcut: press m to toggle microphone on/off.
-
-Architecture Flow
-
-User presses "Start Speaking" in the browser.
-
-The MediaRecorder API captures audio.
-
-Audio is uploaded to the backend endpoint /agent/chat/{session_id}.
-
-FastAPI receives and routes audio to the AssemblyAI API, which produces text.
-
-The transcription is appended to session chat history and sent to Gemini API for reasoning.
-
-Gemini generates an assistant reply.
-
-The reply text is sent to Murf TTS API to synthesize realistic speech.
-
-The backend returns an audio URL.
-
-The browser plays back the generated audio and renders chat text.
-
-Optionally, WebSocket /ws enables real-time streaming with partial transcripts and chunked TTS responses.
-
-End-to-End Flow:
+✨ Core Features
+One‑tap voice chat (microphone → AI answer with auto‑played voice)
+Multi‑stage pipeline: STT → LLM → TTS
+Persistent in‑memory session history (per browser session id)
+Real‑time web search via Tavily (Gemini Function Calling)
+WebSocket live transcripts + streamed TTS playback
+Public demo safety: features are gated until users provide their own API keys (no shared secrets)
+Sidebar Tools:
+Text to Speech generator (choose text → Murf voice output)
+Echo Bot (record → transcribe → re‑speak your words in another voice)
+Keyboard shortcut: press "m" to toggle mic on/off
+🧠 Architecture Flow
+User presses Start Speaking → Browser records audio (MediaRecorder)
+Audio uploaded to /agent/chat/{session_id}
+AssemblyAI transcribes bytes → text
+Chat history compiled into a Gemini prompt
+Gemini generates assistant reply
+Murf API converts reply text to speech (default voice: en-US-charles)
+Frontend auto‑plays the returned audio & renders chat bubbles
 User Voice → FastAPI → AssemblyAI → Gemini → Murf → Browser Playback
+Also supports real‑time streaming via WebSocket (/ws) with partial transcripts and chunked TTS audio.
 
-Project Structure
+🗂️ Project Structure
 app/
-├── main.py                   # FastAPI entrypoint, defines routes
-├── services/                 # Modular service layer
-│   ├── stt_service.py        # AssemblyAI transcription helpers
-│   ├── tts_service.py        # Murf TTS client wrapper
-│   ├── llm_service.py        # Gemini client and prompt builder
-│   ├── weather_service.py    # Example extension: OpenWeather API
-│   ├── murf_ws_service.py    # Murf WebSocket streaming (chunked TTS)
-│   ├── web_search_service.py # Tavily API wrapper for Gemini tool calls
-│   └── streaming_transcriber.py # AssemblyAI real-time transcription
-├── schemas/                  # Pydantic models for request/response validation
-│   └── tts.py                # Data models (e.g., TextToSpeechRequest, ChatResponse)
+├── main.py                # FastAPI entrypoint (routes import service layer)
+├── services/              # Separated domain/service logic
+│   ├── stt_service.py     # AssemblyAI transcription helpers
+│   ├── tts_service.py     # Murf.ai TTS client wrapper
+│   ├── llm_service.py     # Gemini client + prompt builder + function calling
+│   ├── weather_service.py
+│   ├── murf_ws_service.py # Murf WebSocket streaming (chunked TTS)
+│   ├── web_search_service.py # Tavily search wrapper
+│   └── streaming_transcriber.py # AssemblyAI streaming transcription
+├── schemas/               # Pydantic request/response models
+│   └── tts.py             # TextToSpeechRequest, ChatResponse, etc.
 ├── templates/
-│   └── index.html            # Main HTML frontend (chat + tools sidebar)
+│   └── index.html         # UI shell (chat + sidebar tools)
 ├── static/
-│   ├── css/style.css         # Layout and styling
-│   ├── JS/script.js          # Frontend logic: record, upload, playback
-│   ├── images/               # Branding, screenshots, demo GIFs
+│   ├── css/style.css      # Styles (layout + responsive + theme)
+│   ├── JS/script.js       # Frontend logic (record, upload, autoplay)
+│   ├── images/            # Logo, screenshot, demo GIF
 │   │   ├── logo.png
 │   │   ├── ui-screenshot.png
 │   │   └── demo.gif
-│   └── sounds/               # Microphone UI sound effects
+│   └── sounds/            # Mic UI feedback
 │       ├── mic_start.mp3
 │       └── mic_stop.mp3
-├── uploads/                  # Temporary storage for uploaded audio
-requirements.txt              # Python dependencies
-.env                          # Environment file for API keys (excluded from git)
-.gitignore                    # Ignore rules
-README.md                     # Documentation
-
-Environment Variables
-
-Create a .env file in the project root with your API keys:
+├── uploads/               # (Optional) temp upload storage placeholder
+requirements.txt           # Dependencies
+.env                       # Optional server fallback keys (NOT committed)
+.gitignore                 # Ignore rules
+README.md                  # This file
+🔑 Environment Variables (.env)
+Create a .env file in the project root (optional; for local fallback):
 
 ASSEMBLYAI_API_KEY=your_assemblyai_key
 GEMINI_API_KEY=your_gemini_key
 MURF_API_KEY=your_murf_key
 TAVILY_API_KEY=your_tavily_key
 OPENWEATHER_API_KEY=your_openweather_key
-
-
 Notes:
 
-For public deployments, users must provide their own keys via the frontend Settings modal.
+For public deployments, users must enter their own keys via the in‑app Settings modal. Server keys are optional fallback for private/dev.
+Do not commit .env. Share .env.example with placeholders instead.
+Where to get API keys
+AssemblyAI: https://www.assemblyai.com/app/account
+Gemini (Google AI Studio): https://aistudio.google.com/app/apikey
+Murf AI: https://murf.ai/api (Account settings → API key)
+Tavily: https://app.tavily.com/ (Dashboard → API Keys)
+OpenWeather: https://home.openweathermap.org/api_keys
+Tip: copy .env.example to .env and fill your values. Never commit .env.
 
-Server .env keys are optional fallback for development or private use.
-
-Never commit .env to version control. Instead, commit .env.example with placeholders.
-
-Where to get API keys:
-
-AssemblyAI
-
-Gemini (Google AI Studio)
-
-Murf AI
-
-Tavily
-
-OpenWeather
-
-Quick Start
-
-Create and activate a virtual environment:
-
+🚀 Quick Start
+# 1. Create & activate a virtual environment
 python -m venv .venv
 .venv\Scripts\activate  # Windows
-source .venv/bin/activate  # Mac/Linux
 
-
-Install dependencies:
-
+# 2. Install dependencies
 pip install -r requirements.txt
 
+# 3. Add your .env file (see above)
 
-Copy .env.example → .env and fill in your API keys.
+# 4. Run the server (simple dev mode)
+cd app && python main.py
 
-Run the server in development mode:
-
-cd app
-python main.py
-
-
-Alternatively, run with uvicorn auto-reload:
-
-cd app
-uvicorn main:app --reload
-
-
-Open in browser:
-
+# 5. Open in browser
 http://127.0.0.1:8000/
 
-Key Endpoints
+# (Alt) Use uvicorn directly for auto-reload (optional)
+# cd app && uvicorn main:app --reload
+📡 Key Endpoints
 Method	Endpoint	Purpose
-POST	/agent/chat/{session_id}	Complete voice chat pipeline: audio → STT → LLM → TTS
-POST	/tts/echo	Echo Bot: record → Murf voice playback
-POST	/tts/generate	Direct text to speech (Murf)
-POST	/transcribe/file	Raw audio transcription (AssemblyAI)
+POST	/agent/chat/{session_id}	Voice chat: audio → transcription → LLM → TTS
+POST	/tts/echo	Echo tool (repeat what you said with Murf)
+POST	/generate_audio	Direct text → speech (Murf)
+POST	/transcribe/file	Raw transcription (AssemblyAI)
 WS	/ws	Streaming: partial transcripts + chunked TTS
-GET	/debug/web_search	Tavily test endpoint (query param)
-GET	/debug/llm_chat	LLM-only response (text query)
-POST	/debug/llm_chat_text	LLM-only response (JSON body)
-Technical Highlights
+GET	/debug/web_search	Tavily test: ?query=your+question
+GET	/debug/llm_chat	LLM (no audio): ?q=hello
+POST	/debug/llm_chat_text	LLM (no audio): { "text": "hello" }
+🧪 Tech Highlights
+FastAPI backend with service + schema layering (clean separation)
+AssemblyAI transcription (resilient + fallback path)
+Google Gemini (gemini-1.5-flash) via reusable client & retry logic
+Gemini Function Calling with a web_search tool backed by Tavily
+Murf AI TTS wrapped in a lightweight client (consistent error handling)
+Murf WebSocket streaming with safe chunking to speak full answers
+MediaRecorder + multipart upload for low-latency voice capture
+Autoplay + replay logic with audio unlock and retry
+Structured Pydantic responses for clearer API contracts
+Per‑session key overrides wired from UI → backend (no keys echoed back)
+🔄 Session Handling
+Browser session id is appended to the URL (query param). History is stored in an in‑memory dict (CHAT_HISTORY) — suitable for prototyping; swap with Redis or DB for production scaling.
 
-FastAPI backend with clear separation of routes, services, and schemas.
+🛡️ Notes / Limits
+Public mode gates features until users provide keys (Settings auto‑opens on first use)
+Not production-hardened (no auth, rate limiting, or persistence yet)
+API keys must remain secret (.env not committed)
+In-memory history resets on server restart (swap with Redis/DB later)
+Gemini key must be loaded before first request (lazy reconfigure added)
+🤝 Contributing
+Prototype phase — feel free to open issues with ideas (latency, UI/UX, voice packs, multilingual support). PRs welcome after discussion.
 
-Resilient transcription pipeline with AssemblyAI.
+📄 License
+This project is licensed under the MIT License. See LICENSE.txt for details.
 
-Gemini LLM integration with retry logic and function calling (Tavily web search).
-
-Murf AI TTS with error handling and WebSocket streaming support.
-
-MediaRecorder API in frontend for efficient audio capture and upload.
-
-Structured Pydantic responses for consistent API contracts.
-
-In-memory session handling with CHAT_HISTORY dictionary.
-
-Session Handling
-
-Each browser session has a unique session_id (URL parameter).
-
-Chat history is stored in a Python dictionary (CHAT_HISTORY) mapped to session IDs.
-
-Suitable for prototyping; replace with Redis or database for production scalability.
-
-History resets when server restarts.
-
-Notes and Limitations
-
-Demo mode requires users to provide their own API keys.
-
-Not production-ready: no authentication, rate-limiting, or database persistence.
-
-Latency depends on response times from AssemblyAI, Gemini, and Murf APIs.
-
-In-memory session history is cleared on server restart.
-
-API keys must remain private.
-
-Contributing
-
-Contributions are welcome. Suggestions, bug fixes, and feature ideas can be submitted as issues.
-
-Steps to contribute:
-
-Fork the repository.
-
-Create a new feature branch (feature/my-feature).
-
-Commit your changes with clear messages.
-
-Open a pull request for review.
-
-License
-
-This project is licensed under the MIT License.
-See LICENSE.txt
- for details.
-
-Acknowledgements
-
-AssemblyAI
- for speech-to-text.
-
-Google Gemini
- for language reasoning.
-
-Murf AI
- for natural TTS voices.
-
-FastAPI
- for backend development.
-
-Built as part of the 30-Day AI Voice Agent Challenge by Murf.ai.
+🙌 Acknowledgements
+AssemblyAI for speech-to-text
+Google Gemini for language understanding
+Murf AI for high-quality synthetic voices
+FastAPI for the rapid backend framework
+Built as part of a 30‑Day AI Voice Agent Challenge by Murf.ai
