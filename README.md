@@ -1,24 +1,27 @@
 ✨ Core Features
-One‑tap voice chat (microphone → AI answer with auto‑played voice)
-Multi‑stage pipeline: STT → LLM → TTS
-Persistent in‑memory session history (per browser session id)
-Real‑time web search via Tavily (Gemini Function Calling)
-WebSocket live transcripts + streamed TTS playback
-Public demo safety: features are gated until users provide their own API keys (no shared secrets)
-Sidebar Tools:
-Text to Speech generator (choose text → Murf voice output)
-Echo Bot (record → transcribe → re‑speak your words in another voice)
-Keyboard shortcut: press "m" to toggle mic on/off
+-One‑tap voice chat (microphone → AI answer with auto‑played voice)
+-Multi‑stage pipeline: STT → LLM → TTS
+-Persistent in‑memory session history (per browser session id)
+-Real‑time web search via Tavily (Gemini Function Calling)
+W-ebSocket live transcripts + streamed TTS playback
+-Public demo safety: features are gated until users provide their own API keys (no shared secrets)
+-Sidebar Tools:
+  -->Text to Speech generator (choose text → Murf voice output)
+  -->Echo Bot (record → transcribe → re‑speak your words in another voice)
+-Keyboard shortcut: press "m" to toggle mic on/off
+
+
 🧠 Architecture Flow
-User presses Start Speaking → Browser records audio (MediaRecorder)
-Audio uploaded to /agent/chat/{session_id}
-AssemblyAI transcribes bytes → text
-Chat history compiled into a Gemini prompt
-Gemini generates assistant reply
-Murf API converts reply text to speech (default voice: en-US-charles)
-Frontend auto‑plays the returned audio & renders chat bubbles
-User Voice → FastAPI → AssemblyAI → Gemini → Murf → Browser Playback
-Also supports real‑time streaming via WebSocket (/ws) with partial transcripts and chunked TTS audio.
+-User presses Start Speaking → Browser records audio (MediaRecorder)
+-Audio uploaded to /agent/chat/{session_id}
+-AssemblyAI transcribes bytes → text
+-Chat history compiled into a Gemini prompt
+-Gemini generates assistant reply
+-Murf API converts reply text to speech (default voice: en-US-charles)
+-Frontend auto‑plays the returned audio & renders chat bubbles
+-User Voice → FastAPI → AssemblyAI → Gemini → Murf → Browser Playback
+-Also supports real‑time streaming via WebSocket (/ws) with partial transcripts and chunked TTS audio.
+
 
 🗂️ Project Structure
 app/
