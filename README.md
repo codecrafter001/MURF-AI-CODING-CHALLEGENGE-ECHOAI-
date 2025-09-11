@@ -53,27 +53,38 @@ requirements.txt # Dependencies
 README.md # This file
 
 
-## 🔑 Environment Variables
-Add a `.env` file in the project root (optional fallback for dev):  
-Create a .env file in the project root (optional; for local fallback):
 
+## 🔑 Environment Variables (.env)
+
+Create a `.env` file in the project root (optional; for local fallback):
+
+```bash
 ASSEMBLYAI_API_KEY=your_assemblyai_key
 GEMINI_API_KEY=your_gemini_key
 MURF_API_KEY=your_murf_key
 TAVILY_API_KEY=your_tavily_key
 OPENWEATHER_API_KEY=your_openweather_key
-Notes:
+Notes
 
-For public deployments, users must enter their own keys via the in‑app Settings modal. Server keys are optional fallback for private/dev.
-Do not commit .env. Share .env.example with placeholders instead.
-Where to get API keys
-AssemblyAI: https://www.assemblyai.com/app/account
-Gemini (Google AI Studio): https://aistudio.google.com/app/apikey
-Murf AI: https://murf.ai/api (Account settings → API key)
-Tavily: https://app.tavily.com/ (Dashboard → API Keys)
-OpenWeather: https://home.openweathermap.org/api_keys
-Tip: copy .env.example to .env and fill your values. Never commit .env.
+For public deployments, users must enter their own keys via the in-app Settings modal.
 
+Server keys are optional fallback for private/dev.
+
+Do not commit .env. Instead, share .env.example with placeholders.
+
+Where to get API Keys
+
+AssemblyAI
+
+Gemini (Google AI Studio)
+
+Murf AI
+ (Account settings → API key)
+
+Tavily
+ (Dashboard → API Keys)
+
+OpenWeather
 ##🚀 Quick Start
 # 1. Create & activate a virtual environment
 python -m venv .venv
