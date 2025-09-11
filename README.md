@@ -22,55 +22,36 @@
 - Supports **real-time streaming** via WebSocket (`/ws`) with partial transcripts and chunked TTS audio
 
 ## 🗂️ Project Structure
-- **app/** → Main application folder 
-├── main.py                # FastAPI entrypoint (routes import service layer)
-├── services/              # Separated domain/service logic
-│   ├── stt_service.py     # AssemblyAI transcription helpers
-│   ├── tts_service.py     # Murf.ai TTS client wrapper
-│   ├── llm_service.py     # Gemini client + prompt builder + function calling
-│   ├── weather_service.py
-│   ├── murf_ws_service.py # Murf WebSocket streaming (chunked TTS)
-│   ├── web_search_service.py # Tavily search wrapper
-│   └── streaming_transcriber.py # AssemblyAI streaming transcription
-├── schemas/               # Pydantic request/response models
-│   └── tts.py             # TextToSpeechRequest, ChatResponse, etc.
+app/
+├── main.py # FastAPI entrypoint (routes import service layer)
+├── services/ # Separated domain/service logic
+│ ├── stt_service.py # AssemblyAI transcription helpers
+│ ├── tts_service.py # Murf.ai TTS client wrapper
+│ ├── llm_service.py # Gemini client + prompt builder + function calling
+│ ├── weather_service.py
+│ ├── murf_ws_service.py # Murf WebSocket streaming (chunked TTS)
+│ ├── web_search_service.py # Tavily search wrapper
+│ └── streaming_transcriber.py # AssemblyAI streaming transcription
+├── schemas/ # Pydantic request/response models
+│ └── tts.py # TextToSpeechRequest, ChatResponse, etc.
 ├── templates/
-│   └── index.html         # UI shell (chat + sidebar tools)
+│ └── index.html # UI shell (chat + sidebar tools)
 ├── static/
-│   ├── css/style.css      # Styles (layout + responsive + theme)
-│   ├── JS/script.js       # Frontend logic (record, upload, autoplay)
-│   ├── images/            # Logo, screenshot, demo GIF
-│   │   ├── logo.png
-│   │   ├── ui-screenshot.png
-│   │   └── demo.gif
-│   └── sounds/            # Mic UI feedback
-│       ├── mic_start.mp3
-│       └── mic_stop.mp3
-├── uploads/               # (Optional) temp upload storage placeholder
-requirements.txt           # Dependencies
-.env                       # Optional server fallback keys (NOT committed)
-.gitignore                 # Ignore rules
-README.md                  # This file
+│ ├── css/style.css # Styles (layout + responsive + theme)
+│ ├── js/script.js # Frontend logic (record, upload, autoplay)
+│ ├── images/ # Logo, screenshot, demo GIF
+│ │ ├── logo.png
+│ │ ├── ui-screenshot.png
+│ │ └── demo.gif
+│ └── sounds/ # Mic UI feedback
+│ ├── mic_start.mp3
+│ └── mic_stop.mp3
+├── uploads/ # (Optional) temp upload storage placeholder
+requirements.txt # Dependencies
+.env # Optional server fallback keys (NOT committed)
+.gitignore # Ignore rules
+README.md # This file
 
-## 🗂️ Project Structure
-- **app/** → Main application folder  
-  - `main.py` → FastAPI entrypoint (routes import service layer)  
-  - **services/** → Domain/service logic  
-    - `stt_service.py` → AssemblyAI transcription helpers  
-    - `tts_service.py` → Murf.ai TTS client wrapper  
-    - `llm_service.py` → Gemini client + prompt builder + function calling  
-    - `weather_service.py`  
-    - `murf_ws_service.py` → Murf WebSocket streaming (chunked TTS)  
-    - `web_search_service.py` → Tavily search wrapper  
-    - `streaming_transcriber.py` → AssemblyAI streaming transcription  
-  - **schemas/** → Pydantic models (`tts.py`: TextToSpeechRequest, ChatResponse, etc.)  
-  - **templates/** → UI shell (`index.html`)  
-  - **static/** → Frontend assets (CSS, JS, images, sounds)  
-  - **uploads/** → Temp upload storage (optional)  
-- `requirements.txt` → Dependencies  
-- `.env` → Local API keys (not committed)  
-- `.gitignore` → Ignore rules  
-- `README.md` → Documentation  
 
 ## 🔑 Environment Variables
 Add a `.env` file in the project root (optional fallback for dev):  
