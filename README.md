@@ -22,67 +22,59 @@
 - Supports **real-time streaming** via WebSocket (`/ws`) with partial transcripts and chunked TTS audio
 
 ## 🗂️ Project Structure
-app/
-├── main.py # FastAPI entrypoint (routes import service layer)
-├── services/ # Separated domain/service logic
-│ ├── stt_service.py # AssemblyAI transcription helpers
-│ ├── tts_service.py # Murf.ai TTS client wrapper
-│ ├── llm_service.py # Gemini client + prompt builder + function calling
-│ ├── weather_service.py
-│ ├── murf_ws_service.py # Murf WebSocket streaming (chunked TTS)
-│ ├── web_search_service.py # Tavily search wrapper
-│ └── streaming_transcriber.py # AssemblyAI streaming transcription
-├── schemas/ # Pydantic request/response models
-│ └── tts.py # TextToSpeechRequest, ChatResponse, etc.
-├── templates/
-│ └── index.html # UI shell (chat + sidebar tools)
-├── static/
-│ ├── css/style.css # Styles (layout + responsive + theme)
-│ ├── js/script.js # Frontend logic (record, upload, autoplay)
-│ ├── images/ # Logo, screenshot, demo GIF
-│ │ ├── logo.png
-│ │ ├── ui-screenshot.png
-│ │ └── demo.gif
-│ └── sounds/ # Mic UI feedback
-│ ├── mic_start.mp3
-│ └── mic_stop.mp3
-├── uploads/ # (Optional) temp upload storage placeholder
-requirements.txt # Dependencies
-.env # Optional server fallback keys (NOT committed)
-.gitignore # Ignore rules
-README.md # This file
-
-
-
-## 🔑 Environment Variables (.env)
-
-Create a `.env` file in the project root (optional; for local fallback):
-
 ```bash
+app/
+├── main.py                # FastAPI entrypoint (routes import service layer)
+├── services/              # Separated domain/service logic
+│   ├── stt_service.py     # AssemblyAI transcription helpers
+│   ├── tts_service.py     # Murf.ai TTS client wrapper
+│   ├── llm_service.py     # Gemini client + prompt builder + function calling
+│   ├── weather_service.py
+│   ├── murf_ws_service.py # Murf WebSocket streaming (chunked TTS)
+│   ├── web_search_service.py # Tavily search wrapper
+│   └── streaming_transcriber.py # AssemblyAI streaming transcription
+├── schemas/               # Pydantic request/response models
+│   └── tts.py             # TextToSpeechRequest, ChatResponse, etc.
+├── templates/
+│   └── index.html         # UI shell (chat + sidebar tools)
+├── static/
+│   ├── css/style.css      # Styles (layout + responsive + theme)
+│   ├── JS/script.js       # Frontend logic (record, upload, autoplay)
+│   ├── images/            # Logo, screenshot, demo GIF
+│   │   ├── logo.png
+│   │   ├── ui-screenshot.png
+│   │   └── demo.gif
+│   └── sounds/            # Mic UI feedback
+│       ├── mic_start.mp3
+│       └── mic_stop.mp3
+├── uploads/               # (Optional) temp upload storage placeholder
+requirements.txt           # Dependencies
+.env                       # Optional server fallback keys (NOT committed)
+.gitignore                 # Ignore rules
+README.md                  # This file
+
+
+🔑 Environment Variables (.env)
+Create a .env file in the project root (optional; for local fallback):
+
 ASSEMBLYAI_API_KEY=your_assemblyai_key
 GEMINI_API_KEY=your_gemini_key
 MURF_API_KEY=your_murf_key
 TAVILY_API_KEY=your_tavily_key
 OPENWEATHER_API_KEY=your_openweather_key
-Notes
+Notes:
 
-For public deployments, users must enter their own keys via the in-app Settings modal.
+For public deployments, users must enter their own keys via the in‑app Settings modal. Server keys are optional fallback for private/dev.
+Do not commit .env. Share .env.example with placeholders instead.
+Where to get API keys
+AssemblyAI: https://www.assemblyai.com/app/account
+Gemini (Google AI Studio): https://aistudio.google.com/app/apikey
+Murf AI: https://murf.ai/api (Account settings → API key)
+Tavily: https://app.tavily.com/ (Dashboard → API Keys)
+OpenWeather: https://home.openweathermap.org/api_keys
+Tip: copy .env.example to .env and fill your values. Never commit .env.
 
-Server keys are optional fallback for private/dev.
 
-Do not commit .env. Instead, share .env.example with placeholders.
-
-Where to get API Keys
-
-AssemblyAI
-
-Gemini (Google AI Studio)
-
-Murf AI
- (Account settings → API key)
-
-Tavily
- (Dashboard → API Keys)
 
 OpenWeather
 ##🚀 Quick Start
